@@ -8,6 +8,20 @@ public class Main {
 
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
+		
+		Land land = new Land();
+		Land map [] =new Land[10];
+		map[0].event = 0;
+		map[1].event = 0;
+		map[2].event = 0;
+		map[3].event = 0;
+		map[4].event = 0;
+		map[5].event = 0;
+		map[6].event = 0;
+		map[7].event = 0;
+		map[8].event = 0;
+		map[9].event = 0;
+		
 		ArrayList<Player> playerArr = new ArrayList<Player>();
 		playerArr.add(new Player ("플레이어1"));
 		playerArr.add(new Player ("플레이어2"));
