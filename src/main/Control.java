@@ -11,7 +11,7 @@ public class Control {
 	Player p;
 
 	public void randomEvent() {
-		System.out.println("--황금열쇠 이벤트 발생--");
+		System.out.println("-----황금열쇠 이벤트 발생-----");
 		System.out.println("1번을 눌러 주사위를 굴리세요");
 		String input = scan.nextLine();
 		Random rd = new Random();
