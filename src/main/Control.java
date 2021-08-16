@@ -2,8 +2,13 @@ package main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -77,90 +82,39 @@ public class Control {
 
 		playerArr.add(new Player("플레이어1"));
 		playerArr.add(new Player("플레이어2"));
+		
+		MyCanvas can = new MyCanvas();
+		can.setLocation(100, 200);
+		can.setSize(1001, 101);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		System.out.println(screen.width + "," + screen.height);
 		Frame frame = new Frame("Blue Marble Game");
+		frame.add(can);
 		int frameWidth = 1300;
 		int frameHeight = 700;
 		frame.setSize(frameWidth, frameHeight);
 		frame.setLocation(screen.width / 2 - frameWidth / 2, screen.height / 2 - frameHeight / 2);
 		frame.setResizable(false);
 		frame.setLayout(null);
+		
 
 		// 게임 타이틀
-		JLabel title = new JLabel("부루마블 게임에 어서오세요");
+		Font font = new Font("san-serif", Font.BOLD, 30);
+		JLabel title = new JLabel("BlueMarble Game");
+		title.setFont(font);
 		title.setLocation(frameWidth / 2 - 200, 50);
 		title.setSize(400, 100);
 		title.setBackground(Color.white);
+		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setOpaque(true);
 		frame.add(title);
 
-		// 맵 영역
-		JLabel map1 = new JLabel("1");
-		map1.setLocation(100, 200);
-		map1.setSize(100, 100);
-		map1.setOpaque(true);
-		frame.add(map1);
-
-		JLabel map2 = new JLabel("2");
-		map2.setLocation(210, 200);
-		map2.setSize(100, 100);
-		map2.setOpaque(true);
-		frame.add(map2);
-
-		JLabel map3 = new JLabel("3");
-		map3.setLocation(330, 200);
-		map3.setSize(100, 100);
-		map3.setOpaque(true);
-		frame.add(map3);
-
-		JLabel map4 = new JLabel("4");
-		map4.setLocation(440, 200);
-		map4.setSize(100, 100);
-		map4.setOpaque(true);
-		frame.add(map4);
-
-		JLabel map5 = new JLabel("5");
-		map5.setLocation(550, 200);
-		map5.setSize(100, 100);
-		map5.setOpaque(true);
-		frame.add(map5);
-
-		JLabel map6 = new JLabel("6");
-		map6.setLocation(660, 200);
-		map6.setSize(100, 100);
-		map6.setOpaque(true);
-		frame.add(map6);
-
-		JLabel map7 = new JLabel("7");
-		map7.setLocation(770, 200);
-		map7.setSize(100, 100);
-		map7.setOpaque(true);
-		frame.add(map7);
-
-		JLabel map8 = new JLabel("8");
-		map8.setLocation(880, 200);
-		map8.setSize(100, 100);
-		map8.setOpaque(true);
-		frame.add(map8);
-
-		JLabel map9 = new JLabel("9");
-		map9.setLocation(990, 200);
-		map9.setSize(100, 100);
-		map9.setOpaque(true);
-		frame.add(map9);
-
-		JLabel map10 = new JLabel("10");
-		map10.setLocation(1100, 200);
-		map10.setSize(100, 100);
-		map10.setOpaque(true);
-		frame.add(map10);
-
 		// 스크립트 영역
-		JLabel script = new JLabel("스크립트");
-		script.setLocation(200, 400);
-		script.setSize(640, 200);
+		JLabel script = new JLabel("스크립트 영역");
+		script.setHorizontalAlignment(JLabel.CENTER);
+		script.setLocation(200, 430);
+		script.setSize(640, 170);
 		script.setOpaque(true);
 		frame.add(script);
 
@@ -181,29 +135,27 @@ public class Control {
 		frame.add(passBtn);
 
 		frame.setVisible(true);
-
-		// 스크립트 영역
-		DefaultListModel arr = new DefaultListModel();
-		JList list = new JList(arr);
-		list.setLocation(50, 50);
-		list.setSize(50, 50);
-		list.setVisible(true);
-		JScrollPane sp = new JScrollPane(list);
-		sp.setLocation(200, 400);
-		sp.setSize(640, 200);
-
-		frame.add(sp);
-		frame.setVisible(true);
-		
-		arr.addElement("*******게임 시작*******");
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
 
 		while (true) {
-
 			p = playerArr.get(playerNum);
 			Random rd = new Random();
 			int dice = rd.nextInt(3) + 1;
-			arr.addElement("********************");
-			arr.addElement(p.name + "의 차례입니다.");
+			script.setText(p.name + "의 차례입니다");
+
+			// money 영역
+			JLabel moneyDis = new JLabel(p.name + "재산 : " + p.money);
+			moneyDis.setLocation(200, 400);
+			moneyDis.setBackground(Color.gray);
+			moneyDis.setForeground(Color.white);
+			moneyDis.setSize(640, 30);
+			moneyDis.setOpaque(true);
+			moneyDis.setHorizontalAlignment(JLabel.CENTER);
+			frame.add(moneyDis);
 
 			// 무인도
 			if (p.isolateCount == 0) {
@@ -215,22 +167,21 @@ public class Control {
 				continue;
 			}
 
-			System.out.println("-현재 위치 : " + (p.pos + 1));
-			System.out.println("-현재 재산 : " + p.money);
-			System.out.println("1번을 눌러 주사위를 굴리세요");
-			String input = scan.nextLine();
-			if (input.equals("1")) {
-				System.out.println("--------------------");
-				System.out.println("      주사위 - << " + dice + " >>");
-				p.pos += dice;
-				int left = p.pos - 10;
-				if (p.pos > 9) {
-					p.pos = 0;
-					p.pos += left;
-					p.money += 3000;
-					System.out.println("종점터치 : 2000$ 획득");
+			// 주사위 클릭 이벤트
+			diceBtn.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					p.pos += dice;
+					can.move(dice);
+					int left = p.pos - 10;
+					if (p.pos > 9) {
+						p.pos = 0;
+						p.pos += left;
+						p.money += 3000;
+						script.setText("종점터치 : 2000$ 획득");
+					}
 				}
-			}
+			});
 
 			// land 이벤트
 			if (map[p.pos].ownerIdx == -1) {
@@ -319,5 +270,4 @@ public class Control {
 			passTurn();
 		}
 	}
-
 }
