@@ -59,13 +59,9 @@ public class Control {
 		map[8].event = 1;
 		map[9].event = 0;
 
-		MyCanvas can = new MyCanvas();
-		can.setLocation(150, 150);
-		can.setSize(1001, 151);
-
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		Frame frame = new Frame("Blue Marble Game");
-		frame.add(can);
+
 		int frameWidth = 1300;
 		int frameHeight = 700;
 		frame.setSize(frameWidth, frameHeight);
@@ -83,6 +79,25 @@ public class Control {
 		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setOpaque(true);
 		frame.add(title);
+
+		// 파산 영역
+		JLabel bankrupt = new JLabel("파산");
+		Font font2 = new Font("serif", Font.BOLD, 50);
+		bankrupt.setFont(font2);
+		bankrupt.setBackground(Color.black);
+		bankrupt.setForeground(Color.red);
+		bankrupt.setHorizontalAlignment(JLabel.CENTER);
+		bankrupt.setLocation(frameWidth / 2 - 200, 160);
+		// 525 , 265
+		bankrupt.setSize(400, 170);
+		bankrupt.setOpaque(true);
+		bankrupt.setVisible(false);
+		frame.add(bankrupt);
+
+		MyCanvas can = new MyCanvas();
+		can.setLocation(150, 150);
+		can.setSize(1001, 151);
+		frame.add(can);
 
 		// 황금 열쇠 버튼
 		JButton keyBtn = new JButton("황금 열쇠 열기");
@@ -188,6 +203,16 @@ public class Control {
 					script.setText("<html>다른 사람이 매입한 구역입니다.<br/><html/>" + p.buildingExpense + "원을 지불했습니다.");
 					moneyDis.setText(p.name + "재산 : " + p.money);
 				}
+				if (p.money <= 0) {
+					passTurn();
+					p = playerArr.get(playerNum);
+					script.setText("<html>게임 종료<br/><html/>" + p.name + "님이 이겼습니다.");
+					bankrupt.setVisible(true);
+					diceBtn.setVisible(false);
+					passBtn.setVisible(false);
+					buyBtn.setVisible(false);
+					keyBtn.setVisible(false);
+				}
 			}
 		});
 
@@ -211,6 +236,16 @@ public class Control {
 					moneyDis.setText(p.name + "재산 : " + p.money);
 				}
 				keyBtn.setVisible(false);
+				if (p.money <= 0) {
+					passTurn();
+					p = playerArr.get(playerNum);
+					script.setText("<html>게임 종료<br/><html/>" + p.name + "님이 이겼습니다.");
+					bankrupt.setVisible(true);
+					diceBtn.setVisible(false);
+					passBtn.setVisible(false);
+					buyBtn.setVisible(false);
+					keyBtn.setVisible(false);
+				}
 			}
 		});
 
@@ -259,6 +294,16 @@ public class Control {
 					buildBtn2.setVisible(false);
 					buildBtn3.setVisible(false);
 				}
+				if (p.money <= 0) {
+					passTurn();
+					p = playerArr.get(playerNum);
+					script.setText("<html>게임 종료<br/><html/>" + p.name + "님이 이겼습니다.");
+					bankrupt.setVisible(true);
+					diceBtn.setVisible(false);
+					passBtn.setVisible(false);
+					buyBtn.setVisible(false);
+					keyBtn.setVisible(false);
+				}
 			}
 		});
 		buildBtn2.addActionListener(new ActionListener() {
@@ -283,6 +328,16 @@ public class Control {
 					buildBtn1.setVisible(false);
 					buildBtn2.setVisible(false);
 					buildBtn3.setVisible(false);
+				}
+				if (p.money <= 0) {
+					passTurn();
+					p = playerArr.get(playerNum);
+					script.setText("<html>게임 종료<br/><html/>" + p.name + "님이 이겼습니다.");
+					bankrupt.setVisible(true);
+					diceBtn.setVisible(false);
+					passBtn.setVisible(false);
+					buyBtn.setVisible(false);
+					keyBtn.setVisible(false);
 				}
 			}
 		});
@@ -310,6 +365,16 @@ public class Control {
 					buildBtn2.setVisible(false);
 					buildBtn3.setVisible(false);
 				}
+				if (p.money <= 0) {
+					passTurn();
+					p = playerArr.get(playerNum);
+					script.setText("<html>게임 종료<br/><html/>" + p.name + "님이 이겼습니다.");
+					bankrupt.setVisible(true);
+					diceBtn.setVisible(false);
+					passBtn.setVisible(false);
+					buyBtn.setVisible(false);
+					keyBtn.setVisible(false);
+				}
 			}
 		});
 
@@ -334,36 +399,5 @@ public class Control {
 				buildBtn3.setVisible(false);
 			}
 		});
-
-		// land 이벤트
-		if (map[p.pos].ownerIdx == -1) {
-
-		} else if (map[p.pos].ownerIdx == playerNum) {
-
-		} else if (map[p.pos].ownerIdx != playerNum) {
-
-		}
-
-//		if (map[p.pos].event == 3) {
-//			System.out.println("--------------------");
-//			System.out.println("-현재 위치 : " + (p.pos + 1));
-//			System.out.println("매입된 땅입니다.");
-//			p.money -= p.buildingExpense;
-//			System.out.println(p.buildingExpense + "$를 지불했습니다.");
-//			passTurn();
-//			p.money += p.buildingIncome;
-//			System.out.println(p.name + "님이 " + p.buildingIncome + "$를 얻었습니다.");
-//			passTurn();
-//		}
-
-		// 이동 후
-		if (p.money <= 0) {
-			System.out.println("--------------------");
-			System.out.println("파산했습니다. 게임 종료");
-//			passTurn();
-			System.out.println(p.name + "님이 이겼습니다.");
-//				break;
-		}
-		////
 	}
 }
