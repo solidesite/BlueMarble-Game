@@ -28,67 +28,45 @@ public class Control {
 	int buildingPrice1 = 4000;
 	int buildingPrice2 = 6000;
 	int buildingPrice3 = 10000;
+	int count = 0;
 
-	public void passTurn() {
-		// 플레이어 넘기기
-		playerNum++;
-		if (playerNum == playerArr.size()) {
-			playerNum = 0;
-		}
-	}
-
-	public void randomEvent() {
-		System.out.println("--------------------");
-		System.out.println("-현재 위치 : " + (p.pos + 1));
-		System.out.println("-현재 재산 : " + p.money);
-		System.out.println("<< 황금열쇠 이벤트 발생 >>");
-		System.out.println("1번을 눌러 주사위를 굴리세요");
-		String input = scan.nextLine();
-		Random rd = new Random();
-		int randomE = rd.nextInt(3);
-		if (input.equals("1")) {
-			if (randomE == 0) {
-				System.out.println("당신은 주차위반을 하여 벌금을 냈습니다.");
-				System.out.println("1000$를 지불했습니다.");
-				p.money -= 1000;
-			} else if (randomE == 1) {
-				System.out.println("당신은 대회에 입상하여 상금을 얻었습니다.");
-				System.out.println("1000$를 얻었습니다.");
-				p.money += 1000;
-			} else if (randomE == 2) {
-				System.out.println("당신은 로또에 당첨되었습니다.");
-				System.out.println("5000$를 얻었습니다.");
-				p.money += 5000;
-			}
-		}
-	}
+//	public void passTurn() {
+//		// 플레이어 넘기기
+//		playerNum++;
+//		if (playerNum == playerArr.size()) {
+//			playerNum = 0;
+//		}
+//		System.out.println("턴넘기기" + p.name + "의 차례입니다.");
+//		String al = p.name + "의 차례입니다.";
+//		count = 0;
+//	}
 
 	public void start() {
+
+		playerArr.add(new Player("플레이어1"));
+		playerArr.add(new Player("플레이어2"));
+		p = playerArr.get(playerNum);
 
 		Land map[] = new Land[10];
 		for (int i = 0; i < map.length; i++) {
 			map[i] = new Land();
 		}
 		map[0].event = 0;
-		map[1].event = 1;
-		map[2].event = 0;
-		map[3].event = 1;
+		map[1].event = 0;
+		map[2].event = 1;
+		map[3].event = 0;
 		map[4].event = 0;
 		map[5].event = 1;
 		map[6].event = 0;
-		map[7].event = 1;
-		map[8].event = 2;
+		map[7].event = 0;
+		map[8].event = 1;
 		map[9].event = 0;
 
-		playerArr.add(new Player("플레이어1"));
-		playerArr.add(new Player("플레이어2"));
-		
 		MyCanvas can = new MyCanvas();
 		can.setLocation(100, 200);
 		can.setSize(1001, 101);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		System.out.println(screen.width + "," + screen.height);
 		Frame frame = new Frame("Blue Marble Game");
 		frame.add(can);
 		int frameWidth = 1300;
@@ -97,7 +75,6 @@ public class Control {
 		frame.setLocation(screen.width / 2 - frameWidth / 2, screen.height / 2 - frameHeight / 2);
 		frame.setResizable(false);
 		frame.setLayout(null);
-		
 
 		// 게임 타이틀
 		Font font = new Font("san-serif", Font.BOLD, 30);
@@ -109,6 +86,30 @@ public class Control {
 		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setOpaque(true);
 		frame.add(title);
+
+		// 황금 열쇠 버튼
+		JButton keyBtn = new JButton("황금 열쇠 열기");
+		keyBtn.setLocation(700, 440);
+		keyBtn.setSize(130, 150);
+		keyBtn.setVisible(false);
+		frame.add(keyBtn);
+
+		// 건물 선택 버튼
+		JButton buildBtn1 = new JButton("초급 건물");
+		buildBtn1.setLocation(700, 440);
+		buildBtn1.setSize(130, 50);
+		buildBtn1.setVisible(false);
+		frame.add(buildBtn1);
+		JButton buildBtn2 = new JButton("중급 건물");
+		buildBtn2.setLocation(700, 390);
+		buildBtn2.setSize(130, 50);
+		buildBtn2.setVisible(false);
+		frame.add(buildBtn2);
+		JButton buildBtn3 = new JButton("고급 건물");
+		buildBtn3.setLocation(700, 340);
+		buildBtn3.setSize(130, 50);
+		buildBtn3.setVisible(false);
+		frame.add(buildBtn3);
 
 		// 스크립트 영역
 		JLabel script = new JLabel("스크립트 영역");
@@ -124,150 +125,213 @@ public class Control {
 		diceBtn.setSize(200, 60);
 		frame.add(diceBtn);
 
+		// 건물 매입 버튼
 		JButton buyBtn = new JButton("건물 매입");
 		buyBtn.setLocation(850, 470);
 		buyBtn.setSize(200, 60);
+		buyBtn.setVisible(false);
 		frame.add(buyBtn);
 
+		// 턴 넘기기 버튼
 		JButton passBtn = new JButton("턴 넘기기");
 		passBtn.setLocation(850, 540);
 		passBtn.setSize(200, 60);
+		passBtn.setVisible(false);
 		frame.add(passBtn);
 
 		frame.setVisible(true);
+
+		// 닫기 버튼
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
+		script.setText(p.name + "의 차례입니다");
 
-		while (true) {
-			p = playerArr.get(playerNum);
-			Random rd = new Random();
-			int dice = rd.nextInt(3) + 1;
-			script.setText(p.name + "의 차례입니다");
+		// money 영역
+		JLabel moneyDis = new JLabel(p.name + "재산 : " + p.money);
+		moneyDis.setLocation(200, 400);
+		moneyDis.setBackground(Color.gray);
+		moneyDis.setForeground(Color.white);
+		moneyDis.setSize(640, 30);
+		moneyDis.setOpaque(true);
+		moneyDis.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(moneyDis);
 
-			// money 영역
-			JLabel moneyDis = new JLabel(p.name + "재산 : " + p.money);
-			moneyDis.setLocation(200, 400);
-			moneyDis.setBackground(Color.gray);
-			moneyDis.setForeground(Color.white);
-			moneyDis.setSize(640, 30);
-			moneyDis.setOpaque(true);
-			moneyDis.setHorizontalAlignment(JLabel.CENTER);
-			frame.add(moneyDis);
+		// 주사위 버튼 이벤트
+		diceBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p = playerArr.get(playerNum);
+				Random rd = new Random();
+				int dice = rd.nextInt(3) + 1;
+				p.pos += dice;
 
-			// 무인도
-			if (p.isolateCount == 0) {
-				p.isolation = false;
-			} else if (p.isolation == true) {
-				System.out.println("무인도 턴이 " + p.isolateCount + "턴 남았습니다.");
-				p.isolateCount--;
-				passTurn();
-				continue;
-			}
-
-			// 주사위 클릭 이벤트
-			diceBtn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					p.pos += dice;
-					can.move(dice);
-					int left = p.pos - 10;
-					if (p.pos > 9) {
-						p.pos = 0;
-						p.pos += left;
-						p.money += 3000;
-						script.setText("종점터치 : 2000$ 획득");
-					}
+				can.move(dice);
+				int left = p.pos - 10;
+				if (p.pos > 9) {
+					p.pos = 0;
+					p.pos += left;
+					p.money += 2000;
+					moneyDis.setText(p.name + "재산 : " + p.money + " -- 종점 터치 보너스 2000$");
 				}
-			});
+				diceBtn.setVisible(false);
+				passBtn.setVisible(true);
+				buyBtn.setVisible(true);
+				if (map[p.pos].event == 1) {
+					// 황금열쇠 이벤트
+					keyBtn.setVisible(true);
+					script.setText("<< 황금열쇠 이벤트 발생>>");
 
-			// land 이벤트
-			if (map[p.pos].ownerIdx == -1) {
-
-			} else if (map[p.pos].ownerIdx == playerNum) {
-
-			} else if (map[p.pos].ownerIdx != playerNum) {
-
+				}
 			}
+		});
 
-			if (map[p.pos].event == 1) {
-				// 황금열쇠 이벤트
-				randomEvent();
-				String input2 = scan.nextLine();
-			} else if (map[p.pos].event == 2) {
-				// 무인도 이벤트
-				System.out.println("--------------------");
-				System.out.println("-현재 위치 : " + (p.pos + 1));
-				System.out.println("<< 무인도 이벤트 발생 >>");
-				System.out.println(p.name + "님은 무인도에 갇혔습니다.");
-				p.isolation = true;
-				String input2 = scan.nextLine();
-				continue;
-			} else if (map[p.pos].event == 3) {
-				System.out.println("--------------------");
-				System.out.println("-현재 위치 : " + (p.pos + 1));
-				System.out.println("매입된 땅입니다.");
-				p.money -= p.buildingExpense;
-				System.out.println(p.buildingExpense + "$를 지불했습니다.");
-				passTurn();
-				p.money += p.buildingIncome;
-				System.out.println(p.name + "님이 " + p.buildingIncome + "$를 얻었습니다.");
-				passTurn();
+		keyBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Random rd2 = new Random();
+				int randomE = rd2.nextInt(3);
+				p = playerArr.get(playerNum);
+				if (randomE == 0) {
+					script.setText("당신은 주차위반을 하여 벌금 1000$를 지불했습니다.");
+					p.money -= 1000;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+				} else if (randomE == 1) {
+					script.setText("당신은 대회에서 입상하여 상금 1000$를 얻었습니다.");
+					p.money += 1000;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+				} else if (randomE == 2) {
+					script.setText("당신은 로또에 당첨되어 5000$를 얻었습니다.");
+					p.money += 5000;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+				}
+				keyBtn.setVisible(false);
 			}
+		});
 
-			// 이동 후
-			if (p.money <= 0) {
-				System.out.println("--------------------");
-				System.out.println("파산했습니다. 게임 종료");
-				passTurn();
-				System.out.println(p.name + "님이 이겼습니다.");
-				break;
-			}
-			System.out.println("--------------------");
-			System.out.println("-현재 위치 : " + (p.pos + 1));
-			System.out.println("-현재 재산 : " + p.money);
-			System.out.println("무엇을 하시겠습니까?");
-			System.out.println("2.턴 넘기기 3.건물 매입");
-			String input2 = scan.nextLine();
-			if (input2.equals("2")) {
-
-			} else if (input2.equals("3")) {
+		// 건물 매입 버튼 이벤트
+		buyBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p = playerArr.get(playerNum);
 				if (p.hasBuilding == true) {
-					System.out.println("건물을 이미 매입했습니다.");
-				} else if (map[0].event == 3) {
-					System.out.println("다른사람이 이미 매입한 땅입니다.");
+					script.setText("건물을 이미 매입했습니다.");
+					buyBtn.setVisible(false);
 				} else {
-					System.out.println("--------------------");
-					System.out.println("<< 건물 매입 >>");
-					System.out.println("매입할 건물을 선택하십시오.");
-					System.out.println("1.초급 건물 : 4000$");
-					System.out.println("2.중급 건물 : 6000$");
-					System.out.println("3.고급 건물 : 10000$");
-					String input3 = scan.nextLine();
-					if (input3.equals("1")) {
-						p.buyBuilding1(buildingPrice1);
-						map[p.pos].event = 3;
-						passTurn();
-						p.buildingExpense = buildingPrice1 / 2;
-						passTurn();
-					} else if (input3.equals("2")) {
-						p.buyBuilding2(buildingPrice2);
-						map[p.pos].event = 3;
-						passTurn();
-						p.buildingExpense = buildingPrice2 / 2;
-						passTurn();
-					} else if (input3.equals("3")) {
-						p.buyBuilding3(buildingPrice3);
-						map[p.pos].event = 3;
-						passTurn();
-						p.buildingExpense = buildingPrice3 / 2;
-						passTurn();
-					}
+					script.setText(
+							"<html>건물을 매입합니다. <br/><br/> 초급 건물 : 4000$ <br/> 중급 건물 : 6000$<br/>고급 건물 : 10000$<html/>");
+					buildBtn1.setVisible(true);
+					buildBtn2.setVisible(true);
+					buildBtn3.setVisible(true);
 				}
 			}
-			passTurn();
+		});
+		// 건물 선택 버튼 이벤트
+		buildBtn1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p = playerArr.get(playerNum);
+				if (p.money < buildingPrice1) {
+					script.setText("구매 할 수 없습니다.");
+				} else {
+					script.setText("초급 건물을 구매했습니다.");
+					p.money -= buildingPrice1;
+					p.hasBuilding = true;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+					buildBtn1.setVisible(false);
+					buildBtn2.setVisible(false);
+					buildBtn3.setVisible(false);
+				}
+			}
+		});
+		buildBtn2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p = playerArr.get(playerNum);
+				if (p.money < buildingPrice2) {
+					script.setText("구매 할 수 없습니다.");
+				} else {
+					script.setText("중급 건물을 구매했습니다.");
+					p.money -= buildingPrice2;
+					p.hasBuilding = true;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+					buildBtn1.setVisible(false);
+					buildBtn2.setVisible(false);
+					buildBtn3.setVisible(false);
+				}
+			}
+		});
+		buildBtn3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p = playerArr.get(playerNum);
+				if (p.money < buildingPrice3) {
+					script.setText("구매 할 수 없습니다.");
+				} else {
+					script.setText("고급 건물을 구매했습니다.");
+					p.money -= buildingPrice3;
+					p.hasBuilding = true;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+					buildBtn1.setVisible(false);
+					buildBtn2.setVisible(false);
+					buildBtn3.setVisible(false);
+				}
+			}
+		});
+
+		// 턴넘기기 버튼
+		passBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p = playerArr.get(playerNum);
+				playerNum++;
+				if (playerNum == playerArr.size()) {
+					playerNum = 0;
+				}
+				p = playerArr.get(playerNum);
+				System.out.println("턴넘기기" + p.name + "의 차례입니다.");
+				script.setText(p.name + "의 차례입니다");
+				moneyDis.setText(p.name + "재산 : " + p.money);
+				diceBtn.setVisible(true);
+				buyBtn.setVisible(false);
+				keyBtn.setVisible(false);
+				buildBtn1.setVisible(false);
+				buildBtn2.setVisible(false);
+				buildBtn3.setVisible(false);
+			}
+		});
+
+		// land 이벤트
+		if (map[p.pos].ownerIdx == -1) {
+
+		} else if (map[p.pos].ownerIdx == playerNum) {
+
+		} else if (map[p.pos].ownerIdx != playerNum) {
+
 		}
+
+//		if (map[p.pos].event == 3) {
+//			System.out.println("--------------------");
+//			System.out.println("-현재 위치 : " + (p.pos + 1));
+//			System.out.println("매입된 땅입니다.");
+//			p.money -= p.buildingExpense;
+//			System.out.println(p.buildingExpense + "$를 지불했습니다.");
+//			passTurn();
+//			p.money += p.buildingIncome;
+//			System.out.println(p.name + "님이 " + p.buildingIncome + "$를 얻었습니다.");
+//			passTurn();
+//		}
+
+		// 이동 후
+		if (p.money <= 0) {
+			System.out.println("--------------------");
+			System.out.println("파산했습니다. 게임 종료");
+//			passTurn();
+			System.out.println(p.name + "님이 이겼습니다.");
+//				break;
+		}
+		////
 	}
 }
