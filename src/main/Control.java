@@ -101,24 +101,24 @@ public class Control {
 
 		// 황금 열쇠 버튼
 		JButton keyBtn = new JButton("황금 열쇠 열기");
-		keyBtn.setLocation(700, 440);
+		keyBtn.setLocation(830, 440);
 		keyBtn.setSize(130, 150);
 		keyBtn.setVisible(false);
 		frame.add(keyBtn);
 
 		// 건물 선택 버튼
 		JButton buildBtn1 = new JButton("초급 건물");
-		buildBtn1.setLocation(700, 440);
+		buildBtn1.setLocation(830, 440);
 		buildBtn1.setSize(130, 50);
 		buildBtn1.setVisible(false);
 		frame.add(buildBtn1);
 		JButton buildBtn2 = new JButton("중급 건물");
-		buildBtn2.setLocation(700, 490);
+		buildBtn2.setLocation(830, 490);
 		buildBtn2.setSize(130, 50);
 		buildBtn2.setVisible(false);
 		frame.add(buildBtn2);
 		JButton buildBtn3 = new JButton("고급 건물");
-		buildBtn3.setLocation(700, 540);
+		buildBtn3.setLocation(830, 540);
 		buildBtn3.setSize(130, 50);
 		buildBtn3.setVisible(false);
 		frame.add(buildBtn3);
@@ -126,27 +126,47 @@ public class Control {
 		// 스크립트 영역
 		JLabel script = new JLabel("스크립트 영역");
 		script.setHorizontalAlignment(JLabel.CENTER);
-		script.setLocation(200, 430);
+		script.setLocation(330, 430);
 		script.setSize(640, 170);
 		script.setOpaque(true);
 		frame.add(script);
 
+		// 주사위 영역 타이틀
+		JLabel diceTitle = new JLabel("주사위");
+		diceTitle.setLocation(150, 400);
+		diceTitle.setBackground(Color.gray);
+		diceTitle.setForeground(Color.white);
+		diceTitle.setSize(170, 30);
+		diceTitle.setOpaque(true);
+		diceTitle.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(diceTitle);
+
+		// 주사위 영역
+		Font font3 = new Font("맑은 고딕", Font.BOLD, 50);
+		JLabel diceDis = new JLabel("0");
+		diceDis.setHorizontalAlignment(JLabel.CENTER);
+		diceDis.setFont(font3);
+		diceDis.setLocation(150, 430);
+		diceDis.setSize(170, 170);
+		diceDis.setOpaque(true);
+		frame.add(diceDis);
+
 		// 주사위버튼
 		JButton diceBtn = new JButton("주사위 던지기");
-		diceBtn.setLocation(850, 400);
+		diceBtn.setLocation(980, 400);
 		diceBtn.setSize(200, 60);
 		frame.add(diceBtn);
 
 		// 건물 매입 버튼
 		JButton buyBtn = new JButton("건물 매입");
-		buyBtn.setLocation(850, 470);
+		buyBtn.setLocation(980, 470);
 		buyBtn.setSize(200, 60);
 		buyBtn.setVisible(false);
 		frame.add(buyBtn);
 
 		// 턴 넘기기 버튼
 		JButton passBtn = new JButton("턴 넘기기");
-		passBtn.setLocation(850, 540);
+		passBtn.setLocation(980, 540);
 		passBtn.setSize(200, 60);
 		passBtn.setVisible(false);
 		frame.add(passBtn);
@@ -163,7 +183,7 @@ public class Control {
 
 		// money 영역
 		JLabel moneyDis = new JLabel(p.name + "재산 : " + p.money);
-		moneyDis.setLocation(200, 400);
+		moneyDis.setLocation(frameWidth / 2 - 320, 400);
 		moneyDis.setBackground(Color.gray);
 		moneyDis.setForeground(Color.white);
 		moneyDis.setSize(640, 30);
@@ -179,6 +199,8 @@ public class Control {
 				Random rd = new Random();
 				int dice = rd.nextInt(3) + 1;
 				p.pos += dice;
+				String change = Integer.toString(dice);
+				diceDis.setText(change);
 
 				can.move(dice);
 				int left = p.pos - 10;
