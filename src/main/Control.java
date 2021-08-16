@@ -30,16 +30,13 @@ public class Control {
 	int buildingPrice3 = 10000;
 	int count = 0;
 
-//	public void passTurn() {
-//		// 플레이어 넘기기
-//		playerNum++;
-//		if (playerNum == playerArr.size()) {
-//			playerNum = 0;
-//		}
-//		System.out.println("턴넘기기" + p.name + "의 차례입니다.");
-//		String al = p.name + "의 차례입니다.";
-//		count = 0;
-//	}
+	public void passTurn() {
+		// 플레이어 넘기기
+		playerNum++;
+		if (playerNum == playerArr.size()) {
+			playerNum = 0;
+		}
+	}
 
 	public void start() {
 
@@ -184,6 +181,12 @@ public class Control {
 					keyBtn.setVisible(true);
 					script.setText("<< 황금열쇠 이벤트 발생>>");
 
+				} else if (map[p.pos].ownerIdx == playerNum || map[p.pos].ownerIdx == -1) {
+
+				} else if (map[p.pos].ownerIdx != playerNum) {
+					p.money -= p.buildingExpense;
+					script.setText("<html>다른 사람이 매입한 구역입니다.<br/><html/>" + p.buildingExpense + "원을 지불했습니다.");
+					moneyDis.setText(p.name + "재산 : " + p.money);
 				}
 			}
 		});
@@ -219,6 +222,10 @@ public class Control {
 				if (p.hasBuilding == true) {
 					script.setText("건물을 이미 매입했습니다.");
 					buyBtn.setVisible(false);
+				} else if (map[p.pos].ownerIdx != -1) {
+					script.setText("구매 할 수 없습니다.");
+				} else if (map[p.pos].event == 1) {
+					script.setText("구매 할 수 없습니다.");
 				} else {
 					script.setText(
 							"<html>건물을 매입합니다. <br/><br/> 초급 건물 : 4000$ <br/> 중급 건물 : 6000$<br/>고급 건물 : 10000$<html/>");
@@ -237,9 +244,16 @@ public class Control {
 					script.setText("구매 할 수 없습니다.");
 				} else {
 					script.setText("초급 건물을 구매했습니다.");
-					can.build(playerNum,1);
+					can.build(playerNum, 1);
 					p.money -= buildingPrice1;
 					p.hasBuilding = true;
+					p.buildingIncome = buildingPrice1 / 2;
+					passTurn();
+					p = playerArr.get(playerNum);
+					p.buildingExpense = buildingPrice1 / 2;
+					passTurn();
+					p = playerArr.get(playerNum);
+					map[p.pos].ownerIdx = playerNum;
 					moneyDis.setText(p.name + "재산 : " + p.money);
 					buildBtn1.setVisible(false);
 					buildBtn2.setVisible(false);
@@ -255,9 +269,16 @@ public class Control {
 					script.setText("구매 할 수 없습니다.");
 				} else {
 					script.setText("중급 건물을 구매했습니다.");
-					can.build(playerNum,2);
+					can.build(playerNum, 2);
 					p.money -= buildingPrice2;
 					p.hasBuilding = true;
+					p.buildingIncome = buildingPrice2 / 2;
+					passTurn();
+					p = playerArr.get(playerNum);
+					p.buildingExpense = buildingPrice2 / 2;
+					passTurn();
+					p = playerArr.get(playerNum);
+					map[p.pos].ownerIdx = playerNum;
 					moneyDis.setText(p.name + "재산 : " + p.money);
 					buildBtn1.setVisible(false);
 					buildBtn2.setVisible(false);
@@ -273,9 +294,17 @@ public class Control {
 					script.setText("구매 할 수 없습니다.");
 				} else {
 					script.setText("고급 건물을 구매했습니다.");
-					can.build(playerNum,3);
+					can.build(playerNum, 3);
 					p.money -= buildingPrice3;
 					p.hasBuilding = true;
+					p.buildingIncome = buildingPrice3 / 2;
+					passTurn();
+					p = playerArr.get(playerNum);
+					p.buildingExpense = buildingPrice3 / 2;
+					passTurn();
+					p = playerArr.get(playerNum);
+					map[p.pos].ownerIdx = playerNum;
+
 					moneyDis.setText(p.name + "재산 : " + p.money);
 					buildBtn1.setVisible(false);
 					buildBtn2.setVisible(false);
