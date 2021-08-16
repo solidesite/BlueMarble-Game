@@ -6,49 +6,50 @@ public class Player {
 	int money = 10000;
 	boolean isolation = false;
 	boolean hasBuilding = false;
-	int buildingCredit;
-	int buildingPrice1 = 4000;
-	int buildingPrice2 = 6000;
-	int buildingPrice3 = 10000;
+	int buildingExpense;
+	int buildingIncome;
 	int isolateCount = 2;
 
 	public Player(String name) {
 		this.name = name;
 	}
 
-	public void buyBuilding1() {
-		if (money < buildingPrice1) {
+	public void buyBuilding1(int bp) {
+		if (money < bp) {
 			System.out.println("매입 할 수 없습니다.");
 		} else {
 			System.out.println("--------------------");
 			System.out.println(name + "님이 " + (pos + 1) + "위치에 초급 건물을 매입합니다.");
-			money -= buildingPrice1;
+			money -= bp;
 			hasBuilding = true;
 			System.out.println("-현재 재산 : " + money);
+			buildingIncome = bp / 2;
 		}
 	}
 
-	public void buyBuilding2() {
-		if (money < buildingPrice2) {
+	public void buyBuilding2(int bp) {
+		if (money < bp) {
 			System.out.println("매입 할 수 없습니다.");
 		} else {
 			System.out.println("--------------------");
 			System.out.println(name + "님이 " + (pos + 1) + "위치에 중급 건물을 매입합니다.");
-			money -= buildingPrice2;
+			money -= bp;
 			hasBuilding = true;
 			System.out.println("-현재 재산 : " + money);
+			buildingIncome = bp / 2;
 		}
 	}
 
-	public void buyBuilding3() {
-		if (money < buildingPrice3) {
+	public void buyBuilding3(int bp) {
+		if (money < bp) {
 			System.out.println("매입 할 수 없습니다.");
 		} else {
 			System.out.println("--------------------");
 			System.out.println(name + "님이 " + (pos + 1) + "위치에 고급 건물을 매입합니다.");
-			money -= buildingPrice3;
+			money -= bp;
 			hasBuilding = true;
 			System.out.println("-현재 재산 : " + money);
+			buildingIncome = bp / 2;
 		}
 	}
 }
