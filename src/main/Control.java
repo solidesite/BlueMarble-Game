@@ -63,8 +63,8 @@ public class Control {
 		map[9].event = 0;
 
 		MyCanvas can = new MyCanvas();
-		can.setLocation(100, 200);
-		can.setSize(1001, 101);
+		can.setLocation(150, 150);
+		can.setSize(1001, 151);
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		Frame frame = new Frame("Blue Marble Game");
@@ -101,12 +101,12 @@ public class Control {
 		buildBtn1.setVisible(false);
 		frame.add(buildBtn1);
 		JButton buildBtn2 = new JButton("중급 건물");
-		buildBtn2.setLocation(700, 390);
+		buildBtn2.setLocation(700, 490);
 		buildBtn2.setSize(130, 50);
 		buildBtn2.setVisible(false);
 		frame.add(buildBtn2);
 		JButton buildBtn3 = new JButton("고급 건물");
-		buildBtn3.setLocation(700, 340);
+		buildBtn3.setLocation(700, 540);
 		buildBtn3.setSize(130, 50);
 		buildBtn3.setVisible(false);
 		frame.add(buildBtn3);
@@ -237,6 +237,7 @@ public class Control {
 					script.setText("구매 할 수 없습니다.");
 				} else {
 					script.setText("초급 건물을 구매했습니다.");
+					can.build(playerNum,1);
 					p.money -= buildingPrice1;
 					p.hasBuilding = true;
 					moneyDis.setText(p.name + "재산 : " + p.money);
@@ -254,6 +255,7 @@ public class Control {
 					script.setText("구매 할 수 없습니다.");
 				} else {
 					script.setText("중급 건물을 구매했습니다.");
+					can.build(playerNum,2);
 					p.money -= buildingPrice2;
 					p.hasBuilding = true;
 					moneyDis.setText(p.name + "재산 : " + p.money);
@@ -271,6 +273,7 @@ public class Control {
 					script.setText("구매 할 수 없습니다.");
 				} else {
 					script.setText("고급 건물을 구매했습니다.");
+					can.build(playerNum,3);
 					p.money -= buildingPrice3;
 					p.hasBuilding = true;
 					moneyDis.setText(p.name + "재산 : " + p.money);
