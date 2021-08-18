@@ -85,7 +85,6 @@ public class MyCanvas extends Canvas {
 			buffg.drawImage(p1, plane.posX, plane.posY, plane.width, plane.height, this);
 			Image p2 = (Toolkit.getDefaultToolkit().getImage("airplane2.png"));
 			buffg.drawImage(p2, plane2.posX, plane2.posY, plane2.width, plane2.height, this);
-//			buffg.fillOval(0, 0, 100, 100);
 			Image building1P1 = (Toolkit.getDefaultToolkit().getImage("p1_b1.png"));
 			buffg.drawImage(building1P1, bposX1, 0, 50, 50, this);
 			Image building2P1 = (Toolkit.getDefaultToolkit().getImage("p1_b2.png"));
@@ -103,7 +102,7 @@ public class MyCanvas extends Canvas {
 	}
 
 	public void build(int playerNum, int buildingNum) {
-		if (playerNum == 0 && buildingNum == 1) {
+		if (playerNum == 0) {
 			if (buildingNum == 1) {
 				bposX1 = plane.posX;
 			} else if (buildingNum == 2) {
@@ -111,6 +110,7 @@ public class MyCanvas extends Canvas {
 			} else if (buildingNum == 3) {
 				bposX3 = plane.posX;
 			}
+			repaint();
 		} else if (playerNum == 1) {
 			if (buildingNum == 1) {
 				bposX4 = plane2.posX;
@@ -119,6 +119,7 @@ public class MyCanvas extends Canvas {
 			} else if (buildingNum == 3) {
 				bposX6 = plane2.posX;
 			}
+			repaint();
 		}
 	}
 
@@ -150,6 +151,5 @@ public class MyCanvas extends Canvas {
 			repaint();
 			count--;
 		}
-		System.out.println(plane.posX + "pos" + plane2.posX);
 	}
 }

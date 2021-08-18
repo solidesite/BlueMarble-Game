@@ -28,7 +28,6 @@ public class Control {
 	int buildingPrice1 = 4000;
 	int buildingPrice2 = 6000;
 	int buildingPrice3 = 10000;
-	int count = 0;
 
 	public void passTurn() {
 		// 플레이어 넘기기
@@ -87,9 +86,8 @@ public class Control {
 		bankrupt.setBackground(Color.black);
 		bankrupt.setForeground(Color.red);
 		bankrupt.setHorizontalAlignment(JLabel.CENTER);
-		bankrupt.setLocation(frameWidth / 2 - 200, 160);
-		// 525 , 265
-		bankrupt.setSize(400, 170);
+		bankrupt.setLocation(980, 400);
+		bankrupt.setSize(170, 200);
 		bankrupt.setOpaque(true);
 		bankrupt.setVisible(false);
 		frame.add(bankrupt);
@@ -154,20 +152,20 @@ public class Control {
 		// 주사위버튼
 		JButton diceBtn = new JButton("주사위 던지기");
 		diceBtn.setLocation(980, 400);
-		diceBtn.setSize(200, 60);
+		diceBtn.setSize(170, 60);
 		frame.add(diceBtn);
 
 		// 건물 매입 버튼
 		JButton buyBtn = new JButton("건물 매입");
 		buyBtn.setLocation(980, 470);
-		buyBtn.setSize(200, 60);
+		buyBtn.setSize(170, 60);
 		buyBtn.setVisible(false);
 		frame.add(buyBtn);
 
 		// 턴 넘기기 버튼
 		JButton passBtn = new JButton("턴 넘기기");
 		passBtn.setLocation(980, 540);
-		passBtn.setSize(200, 60);
+		passBtn.setSize(170, 60);
 		passBtn.setVisible(false);
 		frame.add(passBtn);
 
@@ -222,6 +220,11 @@ public class Control {
 
 				} else if (map[p.pos].ownerIdx != playerNum) {
 					p.money -= p.buildingExpense;
+					passTurn();
+					p = playerArr.get(playerNum);
+					p.money += p.buildingIncome;
+					passTurn();
+					p = playerArr.get(playerNum);
 					script.setText("<html>다른 사람이 매입한 구역입니다.<br/><html/>" + p.buildingExpense + "원을 지불했습니다.");
 					moneyDis.setText(p.name + "재산 : " + p.money);
 				}
@@ -242,19 +245,31 @@ public class Control {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Random rd2 = new Random();
-				int randomE = rd2.nextInt(3);
+				int randomE = rd2.nextInt(6);
 				p = playerArr.get(playerNum);
 				if (randomE == 0) {
-					script.setText("당신은 주차위반을 하여 벌금 1000$를 지불했습니다.");
-					p.money -= 1000;
+					script.setText("<html>당신은 주차위반을 했습니다.<br/>벌금 2000$를 지불했습니다.<html/>");
+					p.money -= 2000;
 					moneyDis.setText(p.name + "재산 : " + p.money);
 				} else if (randomE == 1) {
-					script.setText("당신은 대회에서 입상하여 상금 1000$를 얻었습니다.");
+					script.setText("<html>당신은 대회에서 입상했습니다.<br/>상금 1000$를 얻었습니다.<html/>");
 					p.money += 1000;
 					moneyDis.setText(p.name + "재산 : " + p.money);
 				} else if (randomE == 2) {
-					script.setText("당신은 로또에 당첨되어 5000$를 얻었습니다.");
-					p.money += 5000;
+					script.setText("<html>당신은 로또에 당첨되었습니다.<br/>4000$를 얻었습니다.<html/>");
+					p.money += 4000;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+				} else if (randomE == 3) {
+					script.setText("<html>당신은 갑작스런 경제 위기에 맞닥뜨렸습니다.<br/>5000$를 잃었습니다..<html/>");
+					p.money -= 5000;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+				} else if (randomE == 4) {
+					script.setText("<html>당신은 질병으로 인한 병원비를 납부했습니다.<br/>3000$를 지불했습니다.<html/>");
+					p.money -= 3000;
+					moneyDis.setText(p.name + "재산 : " + p.money);
+				} else if (randomE == 5) {
+					script.setText("<html>당신은 장학금을 받았습니다.<br/>1000$를 얻었습니다.<html/>");
+					p.money += 1000;
 					moneyDis.setText(p.name + "재산 : " + p.money);
 				}
 				keyBtn.setVisible(false);
@@ -410,7 +425,6 @@ public class Control {
 					playerNum = 0;
 				}
 				p = playerArr.get(playerNum);
-				System.out.println("턴넘기기" + p.name + "의 차례입니다.");
 				script.setText(p.name + "의 차례입니다");
 				moneyDis.setText(p.name + "재산 : " + p.money);
 				diceBtn.setVisible(true);
@@ -419,6 +433,7 @@ public class Control {
 				buildBtn1.setVisible(false);
 				buildBtn2.setVisible(false);
 				buildBtn3.setVisible(false);
+				passBtn.setVisible(false);
 			}
 		});
 	}
