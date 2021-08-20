@@ -13,8 +13,8 @@ public class MyCanvas extends Canvas {
 
 	Image buffImage;
 	Graphics buffg;
-	Plane plane;
-	Plane plane2;
+	Player player1;
+	Player player2;
 	int count = 0;
 
 	int bposX1 = -100;
@@ -26,8 +26,9 @@ public class MyCanvas extends Canvas {
 //	int bposY = 0;
 
 	public MyCanvas() {
-		plane = new Plane(25, 50, 50, 50);
-		plane2 = new Plane(25, 100, 50, 50);
+		player1 = new Player(25, 50, 50, 50);
+		player2 = new Player(25, 100, 50, 50);
+		
 		repaint();
 	}
 
@@ -82,9 +83,9 @@ public class MyCanvas extends Canvas {
 			Image num10 = (Toolkit.getDefaultToolkit().getImage("num10.png"));
 			buffg.drawImage(num10, 900, 50, 100, 100, this);
 			Image p1 = (Toolkit.getDefaultToolkit().getImage("airplane1.png"));
-			buffg.drawImage(p1, plane.posX, plane.posY, plane.width, plane.height, this);
+			buffg.drawImage(p1, player1.pos, player1.posY, player1.width, player1.height, this);
 			Image p2 = (Toolkit.getDefaultToolkit().getImage("airplane2.png"));
-			buffg.drawImage(p2, plane2.posX, plane2.posY, plane2.width, plane2.height, this);
+			buffg.drawImage(p2, player2.pos, player2.posY, player2.width, player2.height, this);
 			Image building1P1 = (Toolkit.getDefaultToolkit().getImage("p1_b1.png"));
 			buffg.drawImage(building1P1, bposX1, 0, 50, 50, this);
 			Image building2P1 = (Toolkit.getDefaultToolkit().getImage("p1_b2.png"));
@@ -104,20 +105,20 @@ public class MyCanvas extends Canvas {
 	public void build(int playerNum, int buildingNum) {
 		if (playerNum == 0) {
 			if (buildingNum == 1) {
-				bposX1 = plane.posX;
+				bposX1 = player1.pos;
 			} else if (buildingNum == 2) {
-				bposX2 = plane.posX;
+				bposX2 = player1.pos;
 			} else if (buildingNum == 3) {
-				bposX3 = plane.posX;
+				bposX3 = player1.pos;
 			}
 			repaint();
 		} else if (playerNum == 1) {
 			if (buildingNum == 1) {
-				bposX4 = plane2.posX;
+				bposX4 = player2.pos;
 			} else if (buildingNum == 2) {
-				bposX5 = plane2.posX;
+				bposX5 = player2.pos;
 			} else if (buildingNum == 3) {
-				bposX6 = plane2.posX;
+				bposX6 = player2.pos;
 			}
 			repaint();
 		}
@@ -125,28 +126,28 @@ public class MyCanvas extends Canvas {
 
 	public void move(int moveNum) {
 		if (count == 0) {
-			plane.posX += 100 * moveNum;
-			if (plane.posX == 1025) {
-				plane.posX = 25;
+			player1.pos += 100 * moveNum;
+			if (player1.pos == 1025) {
+				player1.pos = 25;
 			}
-			if (plane.posX == 1125) {
-				plane.posX = 125;
+			if (player1.pos == 1125) {
+				player1.pos = 125;
 			}
-			if (plane.posX == 1225) {
-				plane.posX = 225;
+			if (player1.pos == 1225) {
+				player1.pos = 225;
 			}
 			repaint();
 			count++;
 		} else if (count == 1) {
-			plane2.posX += 100 * moveNum;
-			if (plane2.posX == 1025) {
-				plane2.posX = 25;
+			player2.pos += 100 * moveNum;
+			if (player2.pos == 1025) {
+				player2.pos = 25;
 			}
-			if (plane2.posX == 1125) {
-				plane2.posX = 125;
+			if (player2.pos == 1125) {
+				player2.pos = 125;
 			}
-			if (plane2.posX == 1225) {
-				plane2.posX = 225;
+			if (player2.pos == 1225) {
+				player2.pos = 225;
 			}
 			repaint();
 			count--;
