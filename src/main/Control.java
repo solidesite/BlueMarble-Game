@@ -214,13 +214,13 @@ public class Control {
 				if (map[p.pos].event == 1) {
 					// 황금열쇠 이벤트
 					keyBtn.setVisible(true);
-					script.setText("<< 황금열쇠 이벤트 발생>>");
+					script.setText("(( 황금열쇠 이벤트 발생 ))");
 
 				} else if (map[p.pos].event == 2) {
 					// 무인도 이벤트
 					p = playerArr.get(playerNum);
 					p.isolation = true;
-					script.setText("<html><< 무인도 이벤트 발생 >><br/><html/>" + p.name
+					script.setText("<html>(( 무인도 이벤트 발생 ))<br/><html/>" + p.name
 							+ "<html>님은 무인도에 갇혔습니다.<br/>남은 턴 : <html/>" + p.isolationCount);
 					p.isolationCount--;
 					buyBtn.setVisible(false);
@@ -438,7 +438,7 @@ public class Control {
 				}
 				p = playerArr.get(playerNum);
 				if (p.isolation == true) {
-					script.setText(p.name + "<html>님은 무인도에 갇혔습니다.<br/>남은 턴 : <html/>" + p.isolationCount);
+					script.setText(p.name + "님은 무인도에 갇혔습니다. 남은 턴 : " + p.isolationCount);
 					buyBtn.setVisible(false);
 					passBtn.setVisible(true);
 				} else {
