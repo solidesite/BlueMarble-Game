@@ -54,7 +54,7 @@ public class Control {
 		map[4].event = 0;
 		map[5].event = 1;
 		map[6].event = 0;
-		map[7].event = 0;
+		map[7].event = 2;
 		map[8].event = 1;
 		map[9].event = 0;
 
@@ -216,6 +216,18 @@ public class Control {
 					keyBtn.setVisible(true);
 					script.setText("<< 황금열쇠 이벤트 발생>>");
 
+				} else if (map[p.pos].event == 2) {
+					// 무인도 이벤트
+					p = playerArr.get(playerNum);
+					p.isolation = true;
+					script.setText("<html><< 무인도 이벤트 발생 >><br/><html/>" + p.name
+							+ "<html>님은 무인도에 갇혔습니다.<br/>남은 턴 : <html/>" + p.isolationCount);
+					p.isolationCount--;
+					buyBtn.setVisible(false);
+					passBtn.setVisible(true);
+					if (p.isolationCount == 0) {
+						p.isolation = false;
+					}
 				} else if (map[p.pos].ownerIdx == playerNum || map[p.pos].ownerIdx == -1) {
 
 				} else if (map[p.pos].ownerIdx != playerNum) {
@@ -425,15 +437,21 @@ public class Control {
 					playerNum = 0;
 				}
 				p = playerArr.get(playerNum);
-				script.setText(p.name + "의 차례입니다");
-				moneyDis.setText(p.name + "재산 : " + p.money);
-				diceBtn.setVisible(true);
-				buyBtn.setVisible(false);
-				keyBtn.setVisible(false);
-				buildBtn1.setVisible(false);
-				buildBtn2.setVisible(false);
-				buildBtn3.setVisible(false);
-				passBtn.setVisible(false);
+				if (p.isolation == true) {
+					script.setText(p.name + "<html>님은 무인도에 갇혔습니다.<br/>남은 턴 : <html/>" + p.isolationCount);
+					buyBtn.setVisible(false);
+					passBtn.setVisible(true);
+				} else {
+					script.setText(p.name + "의 차례입니다");
+					moneyDis.setText(p.name + "재산 : " + p.money);
+					diceBtn.setVisible(true);
+					buyBtn.setVisible(false);
+					keyBtn.setVisible(false);
+					buildBtn1.setVisible(false);
+					buildBtn2.setVisible(false);
+					buildBtn3.setVisible(false);
+					passBtn.setVisible(false);
+				}
 			}
 		});
 	}

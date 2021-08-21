@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MyCanvas extends Canvas {
-	int posX2 = 10;
-
 	Image buffImage;
 	Graphics buffg;
 	Player player1;
